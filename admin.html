@@ -7,23 +7,17 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; }
         h2 { color: #ff5722; text-align: center; margin-bottom: 20px; }
-        
-        /* Login Box Styling */
         .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         .btn { width: 100%; padding: 12px; background-color: #ff5722; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        
-        /* Dashboard & Table Styling */
-        .dashboard-container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .dashboard-container { max-width: 1100px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .table-responsive { overflow-x: auto; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th, td { border: 1px solid #ddd; padding: 12px; font-size: 14px; }
         th { background-color: #ff5722; color: white; }
         tr:nth-child(even) { background-color: #f9f9f9; }
-        
-        /* Dropdown Status Styling */
         select { padding: 6px; border-radius: 4px; font-weight: bold; border: 1px solid #ccc; cursor: pointer; }
         .hidden { display: none !important; }
         .logout-btn { background: red; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; float: right; font-weight: bold; }
@@ -31,9 +25,9 @@
 </head>
 <body>
 
-    <!-- 1. 🔒 ADMIN LOGIN PAGE -->
+    <!-- 1. LOGIN FORM -->
     <div id="loginPage" class="login-box">
-        <h2>🔒 Admin Login</h2>
+        <h2>🔒 Admin Master Login</h2>
         <form id="loginForm">
             <div class="form-group">
                 <label>Admin Name</label>
@@ -47,11 +41,11 @@
         </form>
     </div>
 
-    <!-- 2. 📋 MASTER DASHBOARD PAGE (Default Hidden) -->
+    <!-- 2. MASTER DASHBOARD LIST -->
     <div id="dashboardPage" class="dashboard-container hidden">
         <button id="logoutBtn" class="logout-btn">Logout</button>
-        <h2>📋 Jai Maa Travels - Master Booking List</h2>
-        <p style="text-align: center; font-weight: bold; color: #555;">Welcome, <span id="displayAdminName" style="color:#ff5722;"></span></p>
+        <h2>📋 Jai Maa Travels - Global Booking List</h2>
+        <p style="text-align: center; font-weight: bold; color: #555;">Logged in as: <span id="displayAdminName" style="color:#ff5722;"></span></p>
         
         <div class="table-responsive">
             <table>
@@ -62,11 +56,11 @@
                         <th>📞 Phone Number</th>
                         <th>📍 Destination</th>
                         <th>📆 Travel Date</th>
-                        <th>⚙️ Status</th>
+                        <th>⚙️ Current Status</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody">
-                    <!-- Data internet se yahan automatic load hoga -->
+                    <!-- Data internet se live load hoga -->
                 </tbody>
             </table>
         </div>
@@ -76,54 +70,55 @@
         const sUrl = "https://supabase.co"; 
         const sKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndidGZweHZzd21qbmNsd3J5b3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzA3MjEsImV4cCI6MjA1NjI0NjcyMX0.XgI8v69Ew7C5r5_U84x2mP1-t8-eN9fO9k_N2g67b8U";
 
-        // Login Submit Handler
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nameInput = document.getElementById('adminName').value;
             const passwordInput = document.getElementById('adminPassword').value;
 
-            // Name aur Password Check
             if (nameInput.toLowerCase() === "admin" && passwordInput === "1234") {
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('dashboardPage').classList.remove('hidden');
                 document.getElementById('displayAdminName').innerText = nameInput;
-                fetchLiveBookings(); // Live list load karein
+                fetchLiveBookings(); 
             } else {
-                alert("Galat Admin Name ya Password! Access Denied.");
+                alert("Galat Admin Name ya Password!");
             }
         });
 
-        // Live Database se Data Fetch karne ka function
+        // Duniyan ke kisi bhi device par saari bookings kholne ka master function
         async function fetchLiveBookings() {
             const tableBody = document.getElementById('adminTableBody');
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Loading live bookings...</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Fetching all bookings from cloud...</td></tr>`;
 
             try {
-                const response = await fetch(`${sUrl}/rest/v1/bookings?select=*&order=id.desc`, {
+                // Bina kisi filter ke saara data fetch karna
+                const response = await fetch(`${sUrl}?select=*&order=id.desc`, {
                     method: 'GET',
-                    headers: { 'apikey': sKey, 'Authorization': `Bearer ${sKey}` }
+                    headers: { 
+                        'apikey': sKey, 
+                        'Authorization': `Bearer ${sKey}`
+                    }
                 });
 
                 const bookings = await response.json();
                 tableBody.innerHTML = "";
 
-                if (bookings.length === 0) {
+                if (!bookings || bookings.length === 0) {
                     tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No bookings found online.</td></tr>`;
                     return;
                 }
 
                 bookings.forEach(booking => {
-                    // Booking ka asli Date aur Time set karna
-                    const submitDate = new Date(booking.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+                    const submitDate = booking.created_at ? new Date(booking.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'N/A';
                     const currentStatus = booking.status || 'Book';
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td><strong>${submitDate}</strong></td>
-                        <td>${booking.name}</td>
-                        <td><a href="tel:${booking.phone}">${booking.phone}</a></td>
-                        <td>${booking.destination}</td>
-                        <td>${booking.date}</td>
+                        <td>${booking.name || 'N/A'}</td>
+                        <td><a href="tel:${booking.phone}">${booking.phone || 'N/A'}</a></td>
+                        <td>${booking.destination || 'N/A'}</td>
+                        <td>${booking.date || 'N/A'}</td>
                         <td>
                             <select onchange="updateStatus(${booking.id}, this.value)">
                                 <option value="Book" ${currentStatus === 'Book' ? 'selected' : ''}>Book</option>
@@ -137,14 +132,13 @@
                     tableBody.appendChild(tr);
                 });
             } catch (error) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Database se connect karne me dikkat aa rahi hai.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Cloud Database connect error!</td></tr>`;
             }
         }
 
-        // Dropdown Status badalne aur save karne ka function
         async function updateStatus(bookingId, newStatus) {
             try {
-                const response = await fetch(`${sUrl}/rest/v1/bookings?id=eq.${bookingId}`, {
+                const response = await fetch(`${sUrl}?id=eq.${bookingId}`, {
                     method: 'PATCH',
                     headers: {
                         'apikey': sKey,
@@ -154,16 +148,15 @@
                     body: JSON.stringify({ status: newStatus })
                 });
                 if (response.ok) {
-                    alert("Status badal gaya hai!");
+                    alert("Global Status updated successfully!");
                 } else {
-                    alert("Status update nahi ho paya.");
+                    alert("Failed to update status on server.");
                 }
             } catch (error) {
                 alert("Network error!");
             }
         }
 
-        // Logout Handler
         document.getElementById('logoutBtn').addEventListener('click', function() {
             document.getElementById('dashboardPage').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
