@@ -3,95 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jai Maa Travels</title>
+    <title>Jai Maa Travels - Admin Panel</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-        html { scroll-behavior: smooth; }
-        header { background-color: #ff5722; color: white; display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-size: 24px; font-weight: bold; }
-        nav ul { display: flex; list-style: none; }
-        nav ul li { margin-left: 20px; }
-        nav ul li a { color: white; text-decoration: none; font-weight: bold; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://unsplash.com') no-repeat center center/cover; height: 45vh; display: flex; justify-content: center; align-items: center; text-align: center; color: white; }
-        .hero-content h1 { font-size: 40px; margin-bottom: 10px; }
-        .hero-content p { font-size: 18px; margin-bottom: 20px; }
-        .btn { background-color: #ff5722; color: white; padding: 10px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .booking { padding: 40px 5%; max-width: 600px; margin: 0 auto; }
-        .booking h2 { text-align: center; margin-bottom: 20px; }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; }
+        h2 { color: #ff5722; text-align: center; margin-bottom: 20px; }
+        .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
-        .submit-btn { width: 100%; padding: 14px; background-color: #4caf50; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
-        #successMessage { margin-top: 20px; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background-color: #ff5722; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .dashboard-container { max-width: 1100px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .table-responsive { overflow-x: auto; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { border: 1px solid #ddd; padding: 12px; font-size: 14px; }
+        th { background-color: #ff5722; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        select { padding: 6px; border-radius: 4px; font-weight: bold; border: 1px solid #ccc; cursor: pointer; }
         .hidden { display: none !important; }
-        footer { background-color: #333; color: white; text-align: center; padding: 15px; margin-top: 40px; }
+        .logout-btn { background: red; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; float: right; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">🛕 Jai Maa Travels</div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#booking">Book Now</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Your Trusted Travel Partner</h1>
-            <p>Safe, comfortable, and affordable journeys across India.</p>
-            <a href="#booking" class="btn">Plan Your Trip</a>
-        </div>
-    </section>
-
-    <!-- CUSTOMER BOOKING FORM -->
-    <section id="booking" class="booking">
-        <h2>Book Your Ride</h2>
-        <form id="travelForm">
-            <div class="form-group"><label>Full Name</label><input type="text" id="name" required placeholder="Enter your name"></div>
-            <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" required placeholder="Enter phone number"></div>
-            <div class="form-group"><label>Where to?</label><input type="text" id="destination" required placeholder="Destination city"></div>
-            <div class="form-group"><label>Travel Date</label><input type="date" id="date" required></div>
-            <button type="submit" class="submit-btn">Confirm Booking</button>
+    <!-- 1. 🔒 ADMIN LOGIN SECTION -->
+    <div id="loginPage" class="login-box">
+        <h2>🔒 Admin Master Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Admin Name</label>
+                <input type="text" id="adminName" required placeholder="Enter Admin Name">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" required placeholder="Enter Password">
+            </div>
+            <button type="submit" class="btn">Login to Dashboard</button>
         </form>
-        <div id="successMessage" class="hidden"></div>
-    </section>
+    </div>
 
-    <footer><p>&copy; 2026 Jai Maa Travels. All Rights Reserved.</p></footer>
+    <!-- 2. 📋 CLEAN MASTER BOOKING LIST TABLE -->
+    <div id="dashboardPage" class="dashboard-container hidden">
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+        <h2>📋 Jai Maa Travels - Master Global Bookings</h2>
+        
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>📅 Booking Date & Time</th>
+                        <th>👤 Customer Name</th>
+                        <th>📞 Phone Number</th>
+                        <th>📍 Destination</th>
+                        <th>📆 Travel Date</th>
+                        <th>⚙️ Change Status</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <!-- Live entries automatic load hongi -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>
-        // 100% Free Open API for Google Sheets (No Blocking Server)
-        const scriptUrl = "https://google.com"; 
+        // Google Sheet Read URL Endpoint
+        const readUrl = "https://google.com";
 
-        document.getElementById('travelForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('adminName').value;
+            const passwordInput = document.getElementById('adminPassword').value;
 
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const destination = document.getElementById('destination').value;
-            const date = document.getElementById('date').value;
-            const msgBox = document.getElementById('successMessage');
+            if (nameInput.toLowerCase() === "admin" && passwordInput === "1234") {
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.remove('hidden');
+                fetchGlobalLiveList(); 
+            } else {
+                alert("Galat Admin Name ya Password!");
+            }
+        });
 
-            msgBox.innerHTML = "Processing your booking...";
-            msgBox.classList.remove('hidden');
-
-            const currentDateTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
-
-            // URL Params format taaki server block na kar sake
-            const uploadUrl = `${scriptUrl}?timestamp=${encodeURIComponent(currentDateTime)}&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&destination=${encodeURIComponent(destination)}&date=${encodeURIComponent(date)}&status=Book`;
+        // Dusre device se data khichne ka master system
+        async function fetchGlobalLiveList() {
+            const tableBody = document.getElementById('adminTableBody');
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; font-weight:bold;">Fetching live data grid...</td></tr>`;
 
             try {
-                const response = await fetch(uploadUrl, { method: 'GET', mode: 'no-cors' });
+                const response = await fetch(readUrl);
+                const bookings = await response.json();
+                tableBody.innerHTML = "";
 
-                // No-cors mode me content check nahi hota, request seedhe secure ho jati h
-                msgBox.innerHTML = `🎉 Thank you, ${name}! Your booking for ${destination} has been registered successfully.`;
-                document.getElementById('travelForm').reset();
+                if (!bookings || bookings.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px;">No bookings found on live sheet yet.</td></tr>`;
+                    return;
+                }
+
+                // Nayi entries top par dikhane ke liye reverse loop
+                bookings.reverse().forEach((booking, idx) => {
+                    const savedStatus = localStorage.getItem(`gs_status_${idx}`) || booking.status || 'Book';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${booking.timestamp || 'N/A'}</strong></td>
+                        <td>${booking.name || 'N/A'}</td>
+                        <td><a href="tel:${booking.phone}" style="color:#ff5722; font-weight:bold; text-decoration:none;">${booking.phone || 'N/A'}</a></td>
+                        <td>${booking.destination || 'N/A'}</td>
+                        <td>${booking.date || 'N/A'}</td>
+                        <td>
+                            <select onchange="saveStatusLocal('${idx}', this.value)">
+                                <option value="Book" ${savedStatus === 'Book' ? 'selected' : ''}>Book</option>
+                                <option value="Pending" ${savedStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Approve" ${savedStatus === 'Approve' ? 'selected' : ''}>Approve</option>
+                                <option value="Payment Pending" ${savedStatus === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
+                                <option value="Final Done" ${savedStatus === 'Final Done' ? 'selected' : ''}>Final Done</option>
+                            </select>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
             } catch (error) {
-                msgBox.innerHTML = "⚠️ Temporary network lag. Please try refresh and submit again.";
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:15px;">Live central server sync lag. Reload after 5 seconds.</td></tr>`;
             }
+        }
+
+        function saveStatusLocal(idx, newStatus) {
+            localStorage.setItem(`gs_status_${idx}`, newStatus);
+            alert("Status changed successfully!");
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
         });
     </script>
 </body>
