@@ -5,38 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jai Maa Travels - Master Admin Panel</title>
     <style>
-        /* Pure Admin Panel Layout */
         body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; }
-        h2 { color: #ff5722; text-align: center; margin-bottom: 20px; font-size: 26px; }
-        
-        /* Secure Login Box */
-        .login-box { max-width: 400px; margin: 120px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #ff5722; text-align: center; margin-bottom: 20px; }
+        .login-box { max-width: 400px; margin: 100px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
-        .btn { width: 100%; padding: 12px; background-color: #ff5722; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
-        /* Master Table Display */
-        .dashboard-container { max-width: 1200px; margin: 20px auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background-color: #ff5722; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        .dashboard-container { max-width: 1100px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .table-responsive { overflow-x: auto; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { border: 1px solid #ddd; padding: 14px; font-size: 15px; }
-        th { background-color: #ff5722; color: white; font-weight: bold; }
+        th, td { border: 1px solid #ddd; padding: 12px; font-size: 14px; }
+        th { background-color: #ff5722; color: white; }
         tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f1f1; }
-        
-        /* Status Dropdown styling */
-        select { padding: 8px; border-radius: 4px; font-weight: bold; border: 1px solid #ccc; cursor: pointer; font-size: 14px; }
+        select { padding: 6px; border-radius: 4px; font-weight: bold; border: 1px solid #ccc; cursor: pointer; }
         .hidden { display: none !important; }
-        .logout-btn { background: #d32f2f; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; float: right; font-weight: bold; font-size: 14px; }
-        .logout-btn:hover { background: #b71c1c; }
+        .logout-btn { background: red; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; float: right; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- 1. 🔒 SECURITY LOGIN BOX (Sirf yahi dikhega shuruat me) -->
+    <!-- 1. 🔒 SECURITY ADMIN LOGIN -->
     <div id="loginPage" class="login-box">
-        <h2>🛕 Admin Login</h2>
+        <h2>🔒 Admin Master Login</h2>
         <form id="loginForm">
             <div class="form-group">
                 <label>Admin Name</label>
@@ -50,11 +41,10 @@
         </form>
     </div>
 
-    <!-- 2. 📋 MASTER BOOKING LIST TABLE (Login ke baad khulega, No Form Here) -->
+    <!-- 2. 📋 CLEAN MASTER BOOKING LIST TABLE -->
     <div id="dashboardPage" class="dashboard-container hidden">
-        <button id="logoutBtn" class="logout-btn">Secure Logout</button>
-        <h2>📋 Jai Maa Travels - Master Booking List</h2>
-        <div style="clear: both;"></div>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+        <h2>📋 Jai Maa Travels - Global Live Bookings</h2>
         
         <div class="table-responsive">
             <table>
@@ -65,22 +55,21 @@
                         <th>📞 Phone Number</th>
                         <th>📍 Destination</th>
                         <th>📆 Travel Date</th>
-                        <th>⚙️ Status Management</th>
+                        <th>⚙️ Current Status</th>
                     </tr>
                 </thead>
                 <tbody id="adminTableBody">
-                    <!-- Live entries yahan load hongi -->
+                    <!-- Data live yahan load hoga -->
                 </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // Central Cloud Connection
-        const sUrl = "https://supabase.co"; 
-        const sKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndidGZweHZzd21qbmNsd3J5b3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzA3MjEsImV4cCI6MjA1NjI0NjcyMX0.XgI8v69Ew7C5r5_U84x2mP1-t8-eN9fO9k_N2g67b8U";
+        // Formspree Reading Token (Authorization Link)
+        const fetchUrl = "https://formspree.io";
+        const secretToken = "hash_f8e6b1d927a43cf98e0114b726cbb159"; 
 
-        // Login core logic
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const nameInput = document.getElementById('adminName').value;
@@ -89,78 +78,74 @@
             if (nameInput.toLowerCase() === "admin" && passwordInput === "1234") {
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('dashboardPage').classList.remove('hidden');
-                fetchLiveBookings(); 
+                fetchGlobalList(); 
             } else {
-                alert("Galat Admin Name ya Password! Access Denied.");
+                alert("Galat Admin Name ya Password!");
             }
         });
 
-        // Global list fetch system
-        async function fetchLiveBookings() {
+        // Formspree cloud sheet se 100% sahi data read karne ka main system
+        async function fetchGlobalList() {
             const tableBody = document.getElementById('adminTableBody');
-            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; font-weight:bold;">Fetching live global bookings...</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; font-weight:bold;">Fetching live global bookings...</td></tr>`;
 
             try {
-                const response = await fetch(`${sUrl}?select=*&order=id.desc`, {
+                const response = await fetch(fetchUrl, {
                     method: 'GET',
-                    headers: { 'apikey': sKey, 'Authorization': `Bearer ${sKey}` }
+                    headers: { 'Authorization': `Bearer ${secretToken}` }
                 });
 
-                const bookings = await response.json();
+                const data = await response.json();
+                const submissions = data.submissions;
                 tableBody.innerHTML = "";
 
-                if (!bookings || bookings.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No bookings found in database.</td></tr>`;
+                if (!submissions || submissions.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px;">No bookings found online yet.</td></tr>`;
                     return;
                 }
 
-                bookings.forEach(booking => {
-                    const submitDate = booking.created_at ? new Date(booking.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) : 'N/A';
-                    const currentStatus = booking.status || 'Book';
+                submissions.forEach((sub) => {
+                    const extraData = sub.data;
+                    
+                    // Ekdam exact and accurate fields map karna
+                    const submitTime = extraData["SubmitTime"] || new Date(sub.submitted_at).toLocaleString('en-IN');
+                    const name = extraData["Name"] || 'N/A';
+                    const phone = extraData["Phone"] || 'N/A';
+                    const destination = extraData["Destination"] || 'N/A';
+                    const travelDate = extraData["TravelDate"] || 'N/A';
+                    
+                    // Local memory setting to lock status configurations
+                    const savedStatus = localStorage.getItem(`status_global_${sub.id}`) || 'Book';
 
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td><strong>${submitDate}</strong></td>
-                        <td>${booking.name || 'N/A'}</td>
-                        <td><a href="tel:${booking.phone}" style="color: #ff5722; font-weight:bold; text-decoration:none;">${booking.phone || 'N/A'}</a></td>
-                        <td>${booking.destination || 'N/A'}</td>
-                        <td>${booking.date || 'N/A'}</td>
+                        <td><strong>${submitTime}</strong></td>
+                        <td>${name}</td>
+                        <td><a href="tel:${phone}" style="color:#ff5722; font-weight:bold; text-decoration:none;">${phone}</a></td>
+                        <td>${destination}</td>
+                        <td>${travelDate}</td>
                         <td>
-                            <select onchange="updateStatus(${booking.id}, this.value)">
-                                <option value="Book" ${currentStatus === 'Book' ? 'selected' : ''}>Book</option>
-                                <option value="Pending" ${currentStatus === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Approve" ${currentStatus === 'Approve' ? 'selected' : ''}>Approve</option>
-                                <option value="Payment Pending" ${currentStatus === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
-                                <option value="Final Done" ${currentStatus === 'Final Done' ? 'selected' : ''}>Final Done</option>
+                            <select onchange="saveLocalStatus('${sub.id}', this.value)">
+                                <option value="Book" ${savedStatus === 'Book' ? 'selected' : ''}>Book</option>
+                                <option value="Pending" ${savedStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Approve" ${savedStatus === 'Approve' ? 'selected' : ''}>Approve</option>
+                                <option value="Payment Pending" ${savedStatus === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
+                                <option value="Final Done" ${savedStatus === 'Final Done' ? 'selected' : ''}>Final Done</option>
                             </select>
                         </td>
                     `;
                     tableBody.appendChild(tr);
                 });
             } catch (error) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding: 20px;">Cloud connection failed!</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:15px;">Global Cloud Server connect error!</td></tr>`;
             }
         }
 
-        // Live status updating function
-        async function updateStatus(bookingId, newStatus) {
-            try {
-                await fetch(`${sUrl}?id=eq.${bookingId}`, {
-                    method: 'PATCH',
-                    headers: {
-                        'apikey': sKey,
-                        'Authorization': `Bearer ${sKey}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                });
-                alert("Status globally updated!");
-            } catch (error) {
-                alert("Network error updating status!");
-            }
+        function saveLocalStatus(subId, newStatus) {
+            localStorage.setItem(`status_global_${subId}`, newStatus);
+            alert("Status changed successfully!");
         }
 
-        // Secure Logout logic
         document.getElementById('logoutBtn').addEventListener('click', function() {
             document.getElementById('dashboardPage').classList.add('hidden');
             document.getElementById('loginPage').classList.remove('hidden');
