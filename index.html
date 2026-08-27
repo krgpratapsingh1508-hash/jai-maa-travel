@@ -22,6 +22,8 @@
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; }
         .submit-btn { width: 100%; padding: 14px; background-color: #4caf50; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        #successMessage { margin-top: 20px; padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 4px; text-align: center; font-weight: bold; font-size: 16px; }
+        .hidden { display: none !important; }
         footer { background-color: #333; color: white; text-align: center; padding: 15px; margin-top: 40px; }
     </style>
 </head>
@@ -45,66 +47,23 @@
         </div>
     </section>
 
-    <!-- DIRECT ACTION FORM (No Javascript Connection Error) -->
     <section id="booking" class="booking">
         <h2>Book Your Ride</h2>
-        
-        <!-- Yeh link direct data ko bina kisi network error ke cloud sheet me bhej dega -->
-        <form action="https://formspree.io" method="POST" id="travelForm">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" name="Customer_Name" required placeholder="Enter your name">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" name="Phone_Number" required placeholder="Enter phone number">
-            </div>
-            <div class="form-group">
-                <label>Where to?</label>
-                <input type="text" name="Destination" required placeholder="Destination city">
-            </div>
-            <div class="form-group">
-                <label>Travel Date</label>
-                <input type="date" name="Travel_Date" required>
-            </div>
+        <form id="travelForm">
+            <div class="form-group"><label>Full Name</label><input type="text" id="name" required placeholder="Enter your name"></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" required placeholder="Enter phone number"></div>
+            <div class="form-group"><label>Where to?</label><input type="text" id="destination" required placeholder="Destination city"></div>
+            <div class="form-group"><label>Travel Date</label><input type="date" id="date" required></div>
             <button type="submit" class="submit-btn">Confirm Booking</button>
         </form>
+        <div id="successMessage" class="hidden"></div>
     </section>
 
     <footer><p>&copy; 2026 Jai Maa Travels. All Rights Reserved.</p></footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
-                        <td>${booking.name || 'N/A'}</td>
-                        <td><a href="tel:${booking.phone}" style="color:#ff5722; font-weight:bold; text-decoration:none;">${booking.phone || 'N/A'}</a></td>
-                        <td>${booking.destination || 'N/A'}</td>
-                        <td>${booking.date || 'N/A'}</td>
-                        <td>
-                            <select onchange="saveStatusLocal('${idx}', this.value)">
-                                <option value="Book" ${savedStatus === 'Book' ? 'selected' : ''}>Book</option>
-                                <option value="Pending" ${savedStatus === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Approve" ${savedStatus === 'Approve' ? 'selected' : ''}>Approve</option>
-                                <option value="Payment Pending" ${savedStatus === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
-                                <option value="Final Done" ${savedStatus === 'Final Done' ? 'selected' : ''}>Final Done</option>
-                            </select>
-                        </td>
-                    `;
-                    tableBody.appendChild(tr);
-                });
-            } catch (error) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:15px;">Live central server sync lag. Reload after 5 seconds.</td></tr>`;
-            }
-        }
-
-        function saveStatusLocal(idx, newStatus) {
-            localStorage.setItem(`gs_status_${idx}`, newStatus);
-            alert("Status changed successfully!");
-        }
-
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            document.getElementById('dashboardPage').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
-            document.getElementById('loginForm').reset();
         });
     </script>
 </body>
