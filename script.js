@@ -1,26 +1,28 @@
-// Booking Form Logic
 document.getElementById('travelForm').addEventListener('submit', function(event) {
-    // Form ko automatic reload hone se rokne ke liye
     event.preventDefault();
 
-    // Inputs se data nikalna
+    // Form se data nikalna
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
     const destination = document.getElementById('destination').value;
     const date = document.getElementById('date').value;
 
-    // Success Message Box select karna
-    const messageBox = document.getElementById('successMessage');
+    // ⚠️ YAHA APNA WHATSAPP NUMBER DAALEIN (Bina kisi space ya + ke)
+    const myWhatsAppNumber = "919876543210"; 
 
-    // Simple Validation Check
-    if (name && phone && destination && date) {
-        // Message screen par dikhana
-        messageBox.innerHTML = `🎉 Thank you, ${name}! Your booking request for ${destination} on ${date} has been received. We will call you back on ${phone} soon.`;
-        messageBox.classList.remove('hidden');
+    // WhatsApp message format
+    const message = `✨ *New Booking Request - Jai Maa Travels* ✨%0A%0A` +
+                    `👤 *Name:* ${name}%0A` +
+                    `📞 *Phone:* ${phone}%0A` +
+                    `📍 *Destination:* ${destination}%0A` +
+                    `📅 *Date:* ${date}`;
 
-        // Form ko khali (reset) karna
-        document.getElementById('travelForm').reset();
-    } else {
-        alert("Please fill all the details correctly.");
-    }
+    // WhatsApp API Link
+    const whatsappUrl = `https://whatsapp.com{myWhatsAppNumber}&text=${message}`;
+
+    // User ko WhatsApp par bhejna
+    window.open(whatsappUrl, '_blank');
+
+    // Form reset karna
+    document.getElementById('travelForm').reset();
 });
