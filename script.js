@@ -1,5 +1,4 @@
-// Pre-configured cloud database details
-const sUrl = "https://supabase.co";
+const sUrl = "https://supabase.co"; 
 const sKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndidGZweHZzd21qbmNsd3J5b3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzA3MjEsImV4cCI6MjA1NjI0NjcyMX0.XgI8v69Ew7C5r5_U84x2mP1-t8-eN9fO9k_N2g67b8U";
 
 // 1. Booking Online Database me save karna
@@ -12,7 +11,7 @@ document.getElementById('travelForm').addEventListener('submit', async function(
     const date = document.getElementById('date').value;
 
     try {
-        const response = await fetch(sUrl, {
+        const response = await fetch(`${sUrl}/rest/v1/bookings`, {
             method: 'POST',
             headers: {
                 'apikey': sKey,
@@ -43,7 +42,7 @@ async function fetchLiveBookings() {
     if (!tableBody) return;
 
     try {
-        const response = await fetch(`${sUrl}?select=*&order=id.desc`, {
+        const response = await fetch(`${sUrl}/rest/v1/bookings?select=*&order=id.desc`, {
             method: 'GET',
             headers: { 'apikey': sKey, 'Authorization': `Bearer ${sKey}` }
         });
