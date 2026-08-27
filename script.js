@@ -11,6 +11,7 @@ document.getElementById('travelForm').addEventListener('submit', function(event)
     const myWhatsAppNumber = "918120930517"; 
 
     // WhatsApp message format
+   // WhatsApp message format
     const message = `✨ *New Booking Request - Jai Maa Travels* ✨%0A%0A` +
                     `👤 *Name:* ${name}%0A` +
                     `📞 *Phone:* ${phone}%0A` +
@@ -19,7 +20,6 @@ document.getElementById('travelForm').addEventListener('submit', function(event)
 
     // WhatsApp API Link
     const whatsappUrl = `https://whatsapp.com{myWhatsAppNumber}&text=${message}`;
-
     // User ko WhatsApp par bhejna
     window.open(whatsappUrl, '_blank');
 
