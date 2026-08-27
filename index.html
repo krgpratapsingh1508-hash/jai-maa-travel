@@ -16,9 +16,6 @@
         .hero-content h1 { font-size: 40px; margin-bottom: 10px; }
         .hero-content p { font-size: 18px; margin-bottom: 20px; }
         .btn { background-color: #ff5722; color: white; padding: 10px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; }
-        .services { padding: 40px 5%; text-align: center; background-color: #f9f9f9; }
-        .service-container { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 20px; margin-top: 20px; }
-        .service-box { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 280px; }
         .booking { padding: 40px 5%; max-width: 600px; margin: 0 auto; }
         .booking h2 { text-align: center; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
@@ -37,7 +34,6 @@
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
                 <li><a href="#booking">Book Now</a></li>
             </ul>
         </nav>
@@ -51,15 +47,7 @@
         </div>
     </section>
 
-    <section id="services" class="services">
-        <h2>Our Services</h2>
-        <div class="service-container">
-            <div class="service-box"><h3>🚗 Car Rentals</h3><p>AC and Non-AC cars for outstation trips.</p></div>
-            <div class="service-box"><h3>🚌 Tour Packages</h3><p>Customized pilgrimage and family tours.</p></div>
-            <div class="service-box"><h3>⏱️ 24/7 Support</h3><p>Reliable drivers and round-the-clock help.</p></div>
-        </div>
-    </section>
-
+    <!-- CUSTOMER FORM -->
     <section id="booking" class="booking">
         <h2>Book Your Ride</h2>
         <form id="travelForm">
@@ -75,9 +63,8 @@
     <footer><p>&copy; 2026 Jai Maa Travels. All Rights Reserved.</p></footer>
 
     <script>
-        // Global Open Cloud API Connection Settings
-        const sUrl = "https://supabase.co"; 
-        const sKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndidGZweHZzd21qbmNsd3J5b3hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzA3MjEsImV4cCI6MjA1NjI0NjcyMX0.XgI8v69Ew7C5r5_U84x2mP1-t8-eN9fO9k_N2g67b8U";
+        // Formspree Live Active Endpoint
+        const formspreeUrl = "https://formspree.io"; 
 
         document.getElementById('travelForm').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -91,26 +78,30 @@
             msgBox.innerHTML = "Processing your booking...";
             msgBox.classList.remove('hidden');
 
+            // Indian Standard Time (IST) calculate karna
+            const currentDateTime = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+
             try {
-                const response = await fetch(sUrl, {
+                const response = await fetch(formspreeUrl, {
                     method: 'POST',
-                    headers: {
-                        'apikey': sKey,
-                        'Authorization': `Bearer ${sKey}`,
-                        'Content-Type': 'application/json',
-                        'Prefer': 'return=minimal'
-                    },
-                    body: JSON.stringify({ name, phone, destination, date, status: 'Book' })
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ 
+                        "SubmitTime": currentDateTime, 
+                        "Name": name, 
+                        "Phone": phone, 
+                        "Destination": destination, 
+                        "TravelDate": date 
+                    })
                 });
 
                 if (response.ok) {
                     msgBox.innerHTML = `🎉 Thank you, ${name}! Your booking for ${destination} has been registered successfully.`;
                     document.getElementById('travelForm').reset();
                 } else {
-                    msgBox.innerHTML = "⚠️ Server issue! Please try booking again.";
+                    msgBox.innerHTML = "⚠️ Server issue! Please try again.";
                 }
             } catch (error) {
-                msgBox.innerHTML = "⚠️ Network error! Check your internet connection.";
+                msgBox.innerHTML = "⚠️ Connection error! Check internet.";
             }
         });
     </script>
