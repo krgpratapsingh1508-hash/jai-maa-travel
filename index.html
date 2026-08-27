@@ -16,6 +16,8 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#booking">Book Now</a></li>
+                <!-- Naya Admin Button -->
+                <li><a href="#adminSection" id="adminBtn" style="background: #333; padding: 5px 10px; border-radius: 4px;">Admin</a></li>
             </ul>
         </nav>
     </header>
@@ -71,6 +73,27 @@
             <button type="submit" class="submit-btn">Confirm Booking</button>
         </form>
         <div id="successMessage" class="hidden"></div>
+    </section>
+
+    <!-- ONLINE BOOKING LIST PAGE (ADMIN PANEL) -->
+    <section id="adminSection" class="booking hidden" style="border-top: 2px dashed #ff5722; margin-top: 50px; max-width: 800px;">
+        <h2>📋 Live Booking List (Admin Only)</h2>
+        <div style="overflow-x: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #ff5722; color: white;">
+                        <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Phone</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Destination</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">Date</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <!-- Bookings yahan dikhengi -->
+                </tbody>
+            </table>
+            <button id="clearBtn" style="margin-top: 15px; background: red; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 4px;">Clear All Bookings</button>
+        </div>
     </section>
 
     <footer>
