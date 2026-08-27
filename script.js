@@ -8,7 +8,7 @@ document.getElementById('travelForm').addEventListener('submit', function(event)
     const date = document.getElementById('date').value;
 
     // ⚠️ YAHA APNA WHATSAPP NUMBER DAALEIN (Bina kisi space ya + ke)
-    const myWhatsAppNumber = "919876543210"; 
+    const myWhatsAppNumber = "918120930517"; 
 
     // WhatsApp message format
     const message = `✨ *New Booking Request - Jai Maa Travels* ✨%0A%0A` +
